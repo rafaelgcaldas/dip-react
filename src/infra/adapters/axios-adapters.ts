@@ -14,7 +14,7 @@ export interface HttpClient<T, R> {
   request: (data: HttpRequest<T>) => Promise<HttpResponse<R>>;
 }
 
-export class AxiosHttpClientAdapter<T, R> implements HttpClient<T, R> {
+export class AxiosHttpClientAdapter<T = any, R = any> implements HttpClient<T, R> {
   async request(data: HttpRequest<T>): Promise<HttpResponse<R>> {
     let axiosResponse: AxiosResponse
 
