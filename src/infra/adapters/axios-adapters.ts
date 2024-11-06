@@ -3,7 +3,7 @@ import type { AxiosError, AxiosResponse } from "axios";
 import axios from "axios";
 import type { HttpResponse } from "../../@types";
 
-type HttpRequest<T = undefined> = {
+export type HttpRequest<T = undefined> = {
   url: string
   method: 'get' | 'post' | 'put' | 'delete'
   body?: T
