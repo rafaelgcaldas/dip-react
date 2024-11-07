@@ -1,10 +1,5 @@
-import type { HttpResponse } from "../../data/protocols/http"
-import type { User } from "../../domain/models"
+import type { LoadUserList } from "../../domain/usecases"
 import { useUserList } from "./use-user-list"
-
-export type LoadUserList = {
-  loadAll: () => Promise<HttpResponse<User[]>>
-}
 
 export type UserListProps = {
   loadUserList: LoadUserList
