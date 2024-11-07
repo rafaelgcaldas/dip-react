@@ -102,7 +102,7 @@ describe('LaodUserList', () => {
 
     const userList = await sut.loadAll()
 
-    expect(userList).toEqual(httpResult)
+    expect(userList.body).toEqual(httpResult)
   })
 
   it('should return an empty list if HttpClient retruns 204 ', async () => {
@@ -114,6 +114,6 @@ describe('LaodUserList', () => {
 
     const userList = await sut.loadAll()
 
-    expect(userList).toEqual([])
+    expect(userList.body).toEqual([])
   })
 })
