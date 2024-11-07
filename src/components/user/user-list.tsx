@@ -1,4 +1,5 @@
-import type { HttpResponse, User } from "../../@types"
+import type { HttpResponse } from "../../data/protocols/http"
+import type { User } from "../../domain/models"
 import { useUserList } from "./use-user-list"
 
 export type LoadUserList = {

@@ -2,13 +2,13 @@
  
 import { faker } from "@faker-js/faker";
 import { describe, expect, it } from "vitest";
-import type { User } from "../../../@types";
 import { UnexpectedError } from "../../../domain/errors";
 import { mockUserList } from "../../../domain/test";
 import { createRandomUser } from "../../../infra/test";
 import { HttpStatusCode, type HttpRequestParams } from "../../protocols/http";
 import { HttpClientSpy } from "../../test";
 import { RemoteLoadUserList } from "./load-user-list";
+import type { User } from "../../../domain/models";
 
 const makeHttpRequestParams = (): HttpRequestParams<User> => {
   return {

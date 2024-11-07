@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react"
-import type { User } from "../../@types"
 import type { UserListProps } from "./user-list"
+import type { User } from "../../domain/models"
 
 export const useUserList = ({ loadUserList }: UserListProps) => {
   const [users, setUsers] = useState<User[]>([])

@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import axios from 'axios';
 import type { Mocked } from "vitest";
-import type { User } from "../../@types";
+import type { User } from "../../domain/models";
 
 export const createRandomUser = (): User => {
   return {

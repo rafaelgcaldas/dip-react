@@ -1,5 +1,5 @@
-import type { User } from "../@types"
 import type { LoadUserList } from "../components/user/user-list"
+import type { User } from "../domain/models"
 import type { HttpClient } from "../infra/adapters"
 
 export function getUserList(httpClient: HttpClient<undefined, User[]>): LoadUserList {

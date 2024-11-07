@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { AxiosError, AxiosResponse } from "axios";
 import axios from "axios";
-import type { HttpResponse } from "../../@types";
+import type { HttpResponse } from "../../data/protocols/http";
 
 export type HttpRequest<T = undefined> = {
   url: string
