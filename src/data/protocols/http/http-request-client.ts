@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { HttpResponse } from ".";
 
-export type HttpRequestParams<T = any> = {
+export type HttpRequestParams<T = undefined> = {
   url: string
   method: 'get' | 'post' | 'put' | 'delete'
   body?: T

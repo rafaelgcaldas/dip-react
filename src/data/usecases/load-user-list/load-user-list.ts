@@ -1,14 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { User } from "../../../@types";
 import { UnexpectedError } from "../../../domain/errors";
 import { HttpStatusCode, type HttpClient, type HttpRequestParams } from "../../protocols/http";
 
 export class LoadUserList {
   constructor(
-    private readonly params: HttpRequestParams,
-    private readonly httpClient: HttpClient<undefined, User[]>
+    private readonly params: HttpRequestParams<any>,
+    private readonly httpClient: HttpClient<any, User[]>
   ) {}
 
-  async loadAll(): Promise<void> {
+  async loadAll(): Promise<User[]> {
     const httpResponse = await this.httpClient.request({ 
       url: this.params.url,
       method: this.params.method,
@@ -16,7 +17,7 @@ export class LoadUserList {
      })
 
      switch(httpResponse.statusCode) {
-      case HttpStatusCode.ok: break
+      case HttpStatusCode.ok: return httpResponse.body
       default: throw new UnexpectedError()
      }
   }
