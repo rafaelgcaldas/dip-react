@@ -1,4 +1,5 @@
 import type { LoadUserList } from "../../../domain/usecases"
+import { UserItem } from "../user-item"
 import { useUserList } from "./use-user-list"
 
 export type UserListProps = {
@@ -12,9 +13,11 @@ export function UserList({ loadUserList }: UserListProps) {
 
   return (
     <div>
-      {users.map(user => (
-        <p key={user.id}>{user.name}</p>
-      ))}
+      <ul>
+        {users.map(user => (
+          <UserItem key={user.id} user={user} />
+        ))}
+      </ul>
     </div>
   )
 }

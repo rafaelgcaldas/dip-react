@@ -1,4 +1,4 @@
-import { UserList } from "./components/user/user-list";
+import { UserList } from "./components/user/user-list/user-list";
 import type { HttpRequestParams } from "./data/protocols/http";
 import { RemoteLoadUserList } from "./data/usecases/load-user-list/load-user-list";
 import { AxiosHttpClientAdapter } from "./infra/adapters";
