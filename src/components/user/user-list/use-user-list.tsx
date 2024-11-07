@@ -4,13 +4,16 @@ import type { User } from "../../../domain/models"
 
 export const useUserList = ({ loadUserList }: UserListProps) => {
   const [users, setUsers] = useState<User[]>([])
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const getUserList = useCallback(async () => {
+    setIsLoading(true)
     const response = await loadUserList.loadAll()
 
     if (!response.body) return
 
     setUsers(response.body)
+    setIsLoading(false)
   }, [loadUserList])
 
   useEffect(() => {
@@ -18,6 +21,7 @@ export const useUserList = ({ loadUserList }: UserListProps) => {
   }, [getUserList])
 
   return {
-    users
+    users,
+    isLoading
   }
 }

@@ -7,17 +7,21 @@ export type UserListProps = {
 }
 
 export function UserList({ loadUserList }: UserListProps) {
-  const { users } = useUserList({
+  const { users, isLoading } = useUserList({
     loadUserList
   })
 
   return (
     <div>
-      <ul>
-        {users.map(user => (
-          <UserItem key={user.id} user={user} />
-        ))}
-      </ul>
+      {isLoading ? (
+        <p>carregando...</p>
+      ) : (
+        <ul>
+          {users.map(user => (
+            <UserItem key={user.id} user={user} />
+          ))}
+        </ul>
+      )}
     </div>
   )
 }
