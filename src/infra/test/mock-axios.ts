@@ -12,6 +12,11 @@ export const createRandomUser = (): User => {
   };
 }
 
+export const mockHttpResponse = () => ({
+  data: createRandomUser(),
+  status: faker.number.int(),
+})
+
 export const mockAxios = (): Mocked<typeof axios> => {
   const mockedAxios = axios as Mocked<typeof axios>;
 

@@ -3,7 +3,7 @@ import { AxiosHttpClientAdapter } from './axios-adapters';
 
 import type axios from 'axios';
 import { mockGetRequest } from '../../data/test';
-import { mockAxios } from '../test';
+import { mockAxios, mockHttpResponse } from '../test';
 
 vi.mock('axios')
 
@@ -42,6 +42,18 @@ describe('AxiosHttpClientAdapter', () => {
       statusCode: axiosResponse.status,
       body: axiosResponse.data
     })
+  })
+
+  it('should return correct error', () => {
+    const { sut, mockedAxios } = makeSut();
+    
+    mockedAxios.request.mockRejectedValueOnce({
+      response: mockHttpResponse()
+    })
+
+    const promise = sut.request(mockGetRequest())
+
+    expect(promise).toEqual(mockedAxios.request.mock.results[0].value)
   })
 
 })
