@@ -1,4 +1,4 @@
-import type { LoadUserList } from "../../domain/usecases"
+import type { LoadUserList } from "../../../domain/usecases"
 import { useUserList } from "./use-user-list"
 
 export type UserListProps = {
