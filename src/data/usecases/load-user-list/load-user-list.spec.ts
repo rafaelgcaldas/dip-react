@@ -2,12 +2,14 @@
  
 import { faker } from "@faker-js/faker";
 import { describe, expect, it } from "vitest";
+import { HttpStatusCode, type User } from "../../../@types";
+import { UnexpectedError } from "../../../domain/errors";
 import { createRandomUser } from "../../../infra/test";
-import type { HttpRequestParams } from "../../protocols";
+import type { HttpRequestParams } from "../../protocols/http";
 import { HttpClientSpy } from "../../test";
 import { LoadUserList } from "./load-user-list";
 
-const makeHttpRequestParams = (): HttpRequestParams => {
+const makeHttpRequestParams = (): HttpRequestParams<User> => {
   return {
     url: faker.internet.url(),
     method: 'get',
@@ -20,13 +22,13 @@ type SutTypes = {
   method: string
   body: any
   sut: LoadUserList
-  httpClientSpy: HttpClientSpy
+  httpClientSpy: HttpClientSpy<any, User[]>
 }
 
 const makeSut = (): SutTypes => {
   const { url, method, body } = makeHttpRequestParams()
 
-  const httpClientSpy = new HttpClientSpy()
+  const httpClientSpy = new HttpClientSpy<any, User[]>()
   const sut = new LoadUserList({ url, method, body }, httpClientSpy)
 
   return {
@@ -61,5 +63,17 @@ describe('LaodUserList', () => {
     await sut.loadAll()
 
     expect(httpClientSpy.body).toEqual(body)
+  })
+
+  it('should throw UnexpectedError if HttpClient returns 403 ', async () => {
+    const { sut, httpClientSpy } = makeSut()
+
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.forbidden
+    }
+
+    const promise = sut.loadAll()
+
+    await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 })
