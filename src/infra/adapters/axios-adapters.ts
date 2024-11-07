@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { AxiosError, AxiosResponse } from "axios";
+import type { AxiosResponse } from "axios";
 import axios from "axios";
 import type { HttpClient, HttpResponse } from "../../data/protocols/http";
 
@@ -21,9 +21,7 @@ export class AxiosHttpClientAdapter<T = any, R = any> implements HttpClient<T, R
         data: data.body,
       })
     } catch (error) {
-      const _error = error as AxiosError<{ message: string }>
-
-      throw new Error(_error?.response?.data?.message)
+      axiosResponse = error.response
     }
 
     return {
