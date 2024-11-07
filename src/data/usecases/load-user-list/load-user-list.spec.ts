@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
  
 import { faker } from "@faker-js/faker";
 import { describe, expect, it } from "vitest";
@@ -14,11 +15,32 @@ const makeHttpRequestParams = (): HttpRequestParams => {
   }
 }
 
+type SutTypes = {
+  url: string
+  method: string
+  body: any
+  sut: LoadUserList
+  httpClientSpy: HttpClientSpy
+}
+
+const makeSut = (): SutTypes => {
+  const { url, method, body } = makeHttpRequestParams()
+
+  const httpClientSpy = new HttpClientSpy()
+  const sut = new LoadUserList({ url, method, body }, httpClientSpy)
+
+  return {
+    url,
+    method,
+    body,
+    sut,
+    httpClientSpy
+  }
+}
+
 describe('LaodUserList', () => {
   it('should call HttpClient with correct URL', async () => {
-    const { url, method } = makeHttpRequestParams()
-    const httpClientSpy = new HttpClientSpy()
-    const sut = new LoadUserList({ url, method }, httpClientSpy)
+    const { url, sut, httpClientSpy } = makeSut()
 
     await sut.loadAll()
 
@@ -26,9 +48,7 @@ describe('LaodUserList', () => {
   })
 
   it('should call HttpClient with correct method', async () => {
-    const { url, method } = makeHttpRequestParams()
-    const httpClientSpy = new HttpClientSpy()
-    const sut = new LoadUserList({ url, method }, httpClientSpy)
+    const { method, sut, httpClientSpy } = makeSut()
 
     await sut.loadAll()
 
@@ -36,9 +56,7 @@ describe('LaodUserList', () => {
   })
 
   it('should call HttpClient with correct body', async () => {
-    const { url, method, body } = makeHttpRequestParams()
-    const httpClientSpy = new HttpClientSpy()
-    const sut = new LoadUserList({ url, method, body }, httpClientSpy)
+    const { body, sut, httpClientSpy } = makeSut()
 
     await sut.loadAll()
 
