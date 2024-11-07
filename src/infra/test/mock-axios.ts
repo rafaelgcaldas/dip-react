@@ -15,7 +15,7 @@ export const createRandomUser = (): User => {
 export const mockAxios = (): Mocked<typeof axios> => {
   const mockedAxios = axios as Mocked<typeof axios>;
 
-  mockedAxios.request.mockResolvedValue({
+  mockedAxios.request.mockClear().mockResolvedValue({
     data: createRandomUser(),
     status: faker.number.int()
   })

@@ -1,17 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { AxiosError, AxiosResponse } from "axios";
 import axios from "axios";
-import type { HttpResponse } from "../../data/protocols/http";
+import type { HttpClient, HttpResponse } from "../../data/protocols/http";
 
 export type HttpRequest<T = undefined> = {
   url: string
   method: 'get' | 'post' | 'put' | 'delete'
   body?: T
   headers?: any
-}
-
-export interface HttpClient<T, R> {
-  request: (data: HttpRequest<T>) => Promise<HttpResponse<R>>;
 }
 
 export class AxiosHttpClientAdapter<T = any, R = any> implements HttpClient<T, R> {
