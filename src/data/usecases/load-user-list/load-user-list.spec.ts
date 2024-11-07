@@ -2,10 +2,11 @@
  
 import { faker } from "@faker-js/faker";
 import { describe, expect, it } from "vitest";
-import { HttpStatusCode, type User } from "../../../@types";
+import type { User } from "../../../@types";
 import { UnexpectedError } from "../../../domain/errors";
+import { mockUserList } from "../../../domain/test";
 import { createRandomUser } from "../../../infra/test";
-import type { HttpRequestParams } from "../../protocols/http";
+import { HttpStatusCode, type HttpRequestParams } from "../../protocols/http";
 import { HttpClientSpy } from "../../test";
 import { LoadUserList } from "./load-user-list";
 
@@ -89,15 +90,18 @@ describe('LaodUserList', () => {
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 
-  it('should throw UnexpectedError if HttpClient returns 500 ', async () => {
+  it('should return a list of Users it HttpClient retruns 200 ', async () => {
     const { sut, httpClientSpy } = makeSut()
 
+    const httpResult = mockUserList()
+
     httpClientSpy.response = {
-      statusCode: HttpStatusCode.serverError
+      statusCode: HttpStatusCode.ok,
+      body: httpResult
     }
 
-    const promise = sut.loadAll()
+    const userList = await sut.loadAll()
 
-    await expect(promise).rejects.toThrow(new UnexpectedError())
+    await expect(userList).toEqual(httpResult)
   })
 })

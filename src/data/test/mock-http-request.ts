@@ -13,7 +13,7 @@ export class HttpClientSpy<T, R> implements HttpClient<T, R> {
   method?: string;
   body?: any;
   response: HttpResponse<R> = {
-    statusCode: HttpStatusCode.ok
+    statusCode: HttpStatusCode.ok,
   }
 
   async request(data: HttpRequestParams<T>): Promise<HttpResponse<R>> {
