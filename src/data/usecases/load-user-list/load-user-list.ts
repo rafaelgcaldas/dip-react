@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { User } from "../../../@types";
 import { UnexpectedError } from "../../../domain/errors";
+import type { User } from "../../../domain/models";
+import type { LoadUserList } from "../../../domain/usecases";
 import { HttpStatusCode, type HttpClient, type HttpRequestParams } from "../../protocols/http";
 
-export class LoadUserList {
+export class RemoteLoadUserList implements LoadUserList {
   constructor(
     private readonly params: HttpRequestParams<any>,
     private readonly httpClient: HttpClient<any, User[]>

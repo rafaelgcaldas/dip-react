@@ -8,7 +8,7 @@ import { mockUserList } from "../../../domain/test";
 import { createRandomUser } from "../../../infra/test";
 import { HttpStatusCode, type HttpRequestParams } from "../../protocols/http";
 import { HttpClientSpy } from "../../test";
-import { LoadUserList } from "./load-user-list";
+import { RemoteLoadUserList } from "./load-user-list";
 
 const makeHttpRequestParams = (): HttpRequestParams<User> => {
   return {
@@ -22,7 +22,7 @@ type SutTypes = {
   url: string
   method: string
   body: any
-  sut: LoadUserList
+  sut: RemoteLoadUserList
   httpClientSpy: HttpClientSpy<any, User[]>
 }
 
@@ -30,7 +30,7 @@ const makeSut = (): SutTypes => {
   const { url, method, body } = makeHttpRequestParams()
 
   const httpClientSpy = new HttpClientSpy<any, User[]>()
-  const sut = new LoadUserList({ url, method, body }, httpClientSpy)
+  const sut = new RemoteLoadUserList({ url, method, body }, httpClientSpy)
 
   return {
     url,
