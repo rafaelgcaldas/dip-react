@@ -90,7 +90,7 @@ describe('LaodUserList', () => {
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 
-  it('should return a list of Users it HttpClient retruns 200 ', async () => {
+  it('should return a list of Users if HttpClient retruns 200 ', async () => {
     const { sut, httpClientSpy } = makeSut()
 
     const httpResult = mockUserList()
@@ -102,6 +102,18 @@ describe('LaodUserList', () => {
 
     const userList = await sut.loadAll()
 
-    await expect(userList).toEqual(httpResult)
+    expect(userList).toEqual(httpResult)
+  })
+
+  it('should return an empty list if HttpClient retruns 204 ', async () => {
+    const { sut, httpClientSpy } = makeSut()
+
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.noContent,
+    }
+
+    const userList = await sut.loadAll()
+
+    expect(userList).toEqual([])
   })
 })
