@@ -3,7 +3,7 @@ import axios from 'axios';
 import type { Mocked } from "vitest";
 import type { User } from "../../@types";
 
-const createRandomUser = (): User => {
+export const createRandomUser = (): User => {
   return {
     id: faker.number.int(),
     email: faker.internet.email(),
