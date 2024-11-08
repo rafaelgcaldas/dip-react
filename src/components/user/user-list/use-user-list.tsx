@@ -1,24 +1,14 @@
-import { useCallback, useEffect, useState } from "react"
+import { useQuery } from "@tanstack/react-query"
 import type { UserListProps } from "./user-list"
-import type { User } from "../../../domain/models"
 
 export const useUserList = ({ loadUserList }: UserListProps) => {
-  const [users, setUsers] = useState<User[]>([])
-  const [isLoading, setIsLoading] = useState<boolean>(false)
 
-  const getUserList = useCallback(async () => {
-    setIsLoading(true)
-    const response = await loadUserList.loadAll()
+  const { data, isLoading } = useQuery({
+    queryKey: [ "users" ],
+    queryFn: () => loadUserList.loadAll()
+  })
 
-    if (!response.body) return
-
-    setUsers(response.body)
-    setIsLoading(false)
-  }, [loadUserList])
-
-  useEffect(() => {
-    getUserList()
-  }, [getUserList])
+  const users = data ? data.body : []
 
   return {
     users,

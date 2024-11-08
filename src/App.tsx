@@ -1,7 +1,9 @@
+import { QueryClientProvider } from "@tanstack/react-query";
 import { UserList } from "./components/user/user-list/user-list";
 import type { HttpRequestParams } from "./data/protocols/http";
 import { RemoteLoadUserList } from "./data/usecases/load-user-list/load-user-list";
 import { AxiosHttpClientAdapter } from "./infra/adapters";
+import { queryClient } from "./infra/lib/react-query";
 
 
 export function App() {
@@ -16,10 +18,12 @@ export function App() {
 
   return (
     <>
-      <h1>Users</h1>
-      <UserList 
-        loadUserList={remoteLoadUserList} 
-      />
+      <QueryClientProvider client={queryClient}>
+        <h1>Users</h1>
+        <UserList 
+          loadUserList={remoteLoadUserList} 
+        />
+      </QueryClientProvider>
     </>
   )
 }
