@@ -7,9 +7,13 @@ export type UserListProps = {
 }
 
 export function UserList({ loadUserList }: UserListProps) {
-  const { users, isLoading } = useUserList({
+  const { users, isLoading, isError } = useUserList({
     loadUserList
   })
+
+  if (isError) {
+    return <p>Aconteceu um erro inesperado, tente novamente.</p>
+  }
 
   return (
     <div>

@@ -3,15 +3,17 @@ import type { UserListProps } from "./user-list"
 
 export const useUserList = ({ loadUserList }: UserListProps) => {
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: [ "users" ],
-    queryFn: () => loadUserList.loadAll()
+    queryFn: () => loadUserList.loadAll(),
+    retry: false
   })
 
   const users = data ? data.body : []
 
   return {
     users,
-    isLoading
+    isLoading,
+    isError
   }
 }
