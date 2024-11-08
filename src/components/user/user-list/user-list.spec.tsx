@@ -2,12 +2,13 @@ import '@testing-library/jest-dom';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, waitFor, type RenderResult } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import type { HttpResponse } from '../../../data/protocols/http';
 import type { User } from '../../../domain/models';
 import { mockUserList } from '../../../domain/test';
 import type { LoadUserList } from '../../../domain/usecases';
 import { UserList } from './user-list';
+import { UnexpectedError } from '../../../domain/errors';
 
 class LoadUserlistSpy implements LoadUserList {
   async loadAll (): Promise<HttpResponse<User[]>> {
@@ -23,7 +24,7 @@ type SutTypes = {
   wrapper: RenderResult
 }
 
-const makeSut = (): SutTypes => {
+const makeSut = (loadUserListSpy = new LoadUserlistSpy()): SutTypes => {
   const queryClient = new QueryClient();
 
   const Providers = ({ children }) => (
@@ -31,8 +32,6 @@ const makeSut = (): SutTypes => {
       {children}
     </QueryClientProvider>
   );
-
-  const loadUserListSpy = new LoadUserlistSpy()
 
   const wrapper = render(
     <Providers>
@@ -59,6 +58,18 @@ describe('Userlist', () => {
 
     await waitFor(() => {
       expect(wrapper.getAllByRole('listitem').length).toBe(3)
+    });
+  })
+  
+  it('should be able render error text on failure', async () => {
+    const loadUserListSpy = new LoadUserlistSpy()
+    vi.spyOn(loadUserListSpy, 'loadAll').mockRejectedValueOnce(new UnexpectedError)
+
+    const { wrapper } = makeSut(loadUserListSpy)
+    
+    await waitFor(() => {
+      const errorText = wrapper.getByText('Aconteceu um erro inesperado, tente novamente.')
+      expect(errorText).toBeVisible()
     });
   })
 })
