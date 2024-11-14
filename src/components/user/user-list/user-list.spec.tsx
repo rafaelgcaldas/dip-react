@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { render, waitFor, type RenderResult } from '@testing-library/react';
+import { render, renderHook, waitFor, type RenderResult } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import type { HttpResponse } from '../../../data/protocols/http';
 import type { User } from '../../../domain/models';
@@ -9,8 +9,9 @@ import { mockUserList } from '../../../domain/test';
 import type { LoadUserList } from '../../../domain/usecases';
 import { UserList } from './user-list';
 import { UnexpectedError } from '../../../domain/errors';
+import { useUserList } from './use-user-list';
 
-class LoadUserlistSpy implements LoadUserList {
+export class LoadUserlistSpy implements LoadUserList {
   async loadAll (): Promise<HttpResponse<User[]>> {
     return {
       statusCode: 200,
@@ -21,10 +22,17 @@ class LoadUserlistSpy implements LoadUserList {
 
 type SutTypes = {
   loadUserListSpy: LoadUserList
-  wrapper: RenderResult
+  wrapper: RenderResult,
+  result: {
+    current: {
+      users: User[];
+      isLoading: boolean;
+      isError: boolean;
+    };
+  }
 }
 
-const makeSut = (loadUserListSpy = new LoadUserlistSpy()): SutTypes => {
+export const makeSut = (loadUserListSpy = new LoadUserlistSpy()): SutTypes => {
   const queryClient = new QueryClient();
 
   const Providers = ({ children }) => (
@@ -39,9 +47,14 @@ const makeSut = (loadUserListSpy = new LoadUserlistSpy()): SutTypes => {
     </Providers>
   )
 
+  const { result } = renderHook(() => useUserList({ loadUserList: loadUserListSpy }), {
+    wrapper: Providers
+  });
+
   return {
     loadUserListSpy,
-    wrapper
+    wrapper,
+    result
   }
 }
 
